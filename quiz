@@ -1,0 +1,79 @@
+import java.util.*;
+
+class Question {
+    String question;
+    String[] options;
+    int answerIndex;
+
+    public Question(String question, String[] options, int answerIndex) {
+        this.question = question;
+        this.options = options;
+        this.answerIndex = answerIndex;
+    }
+}
+
+public class quiz {
+    private List<Question> questions;
+    private int score;
+    private int totalMarks;
+
+    public quiz() {
+        questions = new ArrayList<>();
+        score = 0;
+        totalMarks = 0; // Initialize total marks
+        loadQuestions();
+    }
+
+    private void loadQuestions() {
+        questions.add(new Question("What is the capital of France?", new String[]{"1. Berlin", "2. Madrid", "3. Paris", "4. Rome"}, 2));
+        questions.add(new Question("Which planet is known as the Red Planet?", new String[]{"1. Earth", "2. Mars", "3. Jupiter", "4. Saturn"}, 1));
+        questions.add(new Question("Who won the FIFA World Cup in 2018?", new String[]{"1. Brazil", "2. France", "3. Germany", "4. Argentina"}, 1));
+        questions.add(new Question("What is the largest ocean on Earth?", new String[]{"1. Atlantic Ocean", "2. Indian Ocean", "3. Arctic Ocean", "4. Pacific Ocean"}, 3));
+        questions.add(new Question("Who wrote 'Romeo and Juliet'?", new String[]{"1. Charles Dickens", "2. Mark Twain", "3. William Shakespeare", "4. Jane Austen"}, 2));
+    }
+
+    public void startQuiz() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to the Quiz Game!");
+        System.out.println("You have 30 seconds to answer all questions. Let's start!");
+
+        long startTime = System.currentTimeMillis();
+        long timeLimit = 30 * 1000; // 30 seconds
+
+        for (int i = 0; i < questions.size(); i++) {
+            if (System.currentTimeMillis() - startTime > timeLimit) {
+                System.out.println("Time's up! You ran out of time.");
+                break;
+            }
+
+            Question q = questions.get(i);
+            System.out.println(q.question);
+            for (String option : q.options) {
+                System.out.println(option);
+            }
+
+            System.out.print("Your answer (1-4): ");
+            int userAnswer = scanner.nextInt() - 1; // Convert to 0-based index
+
+            // Increment total marks for each question
+            totalMarks++;
+
+            if (userAnswer == q.answerIndex) {
+                score++;
+                System.out.println("Correct!\n");
+            } else {
+                System.out.println("Wrong! The correct answer was: " + q.options[q.answerIndex] + "\n");
+            }
+        }
+
+        System.out.println("Quiz finished!");
+        System.out.println("Your score: " + score + "/" + totalMarks);
+        System.out.println("Total marks: " + totalMarks);
+        scanner.close();
+    }
+
+    public static void main(String[] args) {
+        quiz quizGame = new quiz();
+        quizGame.startQuiz();
+    }
+}
